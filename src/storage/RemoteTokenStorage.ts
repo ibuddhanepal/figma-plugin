@@ -1,9 +1,11 @@
+import { normalizeDesignTokens } from 'figma-tokens-library';
 import { DeepTokensMap, ThemeObjectsList } from '@/types';
 import { RemoteResponseData } from '@/types/RemoteResponseData';
 import type { AnyTokenList, SingleToken } from '@/types/tokens';
 import convertTokensToObject from '@/utils/convertTokensToObject';
 import parseTokenValues from '@/utils/parseTokenValues';
 import { SystemFilenames } from '@/constants/SystemFilenames';
+import { tokensLibrary } from '@/tokensLibrary';
 
 export type RemoteTokenStorageMetadata = {
   tokenSetOrder?: string[]
@@ -81,6 +83,8 @@ export abstract class RemoteTokenStorage<Metadata = unknown, SaveOptions = unkno
   }
 
   public async retrieve(): Promise<RemoteResponseData<Metadata> | null> {
+    tokensLibrary.reset();
+
     const data: RemoteTokenStorageData<Metadata> = {
       themes: [],
       tokens: {},
@@ -94,10 +98,15 @@ export abstract class RemoteTokenStorage<Metadata = unknown, SaveOptions = unkno
       if (files.length === 0) {
         return null;
       }
+      (window as any).designTokens = {};
       files.forEach((file) => {
         if (file.type === 'themes') {
           data.themes = [...data.themes, ...file.data];
         } else if (file.type === 'tokenSet') {
+          tokensLibrary.include(normalizeDesignTokens({
+            [file.name]: file.data,
+          }));
+
           data.tokens = {
             ...data.tokens,
             ...parseTokenValues({ [file.name]: file.data }),
@@ -109,11 +118,13 @@ export abstract class RemoteTokenStorage<Metadata = unknown, SaveOptions = unkno
           };
         }
       });
+      (window as any).tokensLibrary = tokensLibrary;
       return {
         status: 'success',
         ...data,
       };
     }
+
     return {
       status: 'failure',
       ...files,

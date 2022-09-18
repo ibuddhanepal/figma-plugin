@@ -2,7 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { DeepKeyTokenMap, EditTokenObject, TokenTypeSchema } from '@/types/tokens';
+import { InternalTokenFlatmapValue } from 'figma-tokens-library/lib/types';
+import { EditTokenObject, TokenTypeSchema } from '@/types/tokens';
 import TokenGroup from './TokenGroup/TokenGroup';
 import { Dispatch } from '../store';
 import { TokenTypes } from '@/constants/TokenTypes';
@@ -13,12 +14,13 @@ import { EditTokenFormStatus } from '@/constants/EditTokenFormStatus';
 import { ShowFormOptions, ShowNewFormOptions } from '@/types';
 import Box from './Box';
 import TokenListingHeading from './TokenListingHeading';
+import { TokenExtensions, TokenTypeMap } from '@/tokensLibrary';
 
 type Props = {
   tokenKey: string
   label: string
   schema: TokenTypeSchema
-  values: DeepKeyTokenMap
+  values: InternalTokenFlatmapValue<TokenTypes, TokenTypeMap, TokenTypes, TokenExtensions>[]
   isPro?: boolean
 };
 
@@ -67,7 +69,9 @@ const TokenListing: React.FC<Props> = ({
     }
   }, [dispatch, collapsedTokenTypeObj, tokenKey, collapsed]);
 
-  if (!values && !showEmptyGroups) return null;
+  if (!values.length && !showEmptyGroups) {
+    return null;
+  }
 
   return (
     <Box css={{ borderBottom: '1px solid $borderMuted' }} data-cy={`tokenlisting-${tokenKey}`}>
@@ -82,12 +86,14 @@ const TokenListing: React.FC<Props> = ({
               display: collapsedTokenTypeObj[tokenKey as TokenTypes] ? 'none' : 'block',
             }}
           >
-            <TokenGroup
-              tokenValues={values}
-              showNewForm={showNewForm}
-              showForm={showForm}
-              schema={schema}
-            />
+            {values.map((group) => (
+              <TokenGroup
+                value={group}
+                showNewForm={showNewForm}
+                showForm={showForm}
+                schema={schema}
+              />
+            ))}
           </Box>
         </DndProvider>
       )}
