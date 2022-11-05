@@ -3,6 +3,8 @@ import { StyleIdMap, StyleThemeMap } from '@/types/StyleIdMap';
 
 // Goes through all styleable properties of a node and swaps the style - this traverses the whole tree of a node
 export async function applySiblingStyleId(node: BaseNode, styleIds: StyleIdMap, styleMap: StyleThemeMap, newTheme: string) {
+  console.log('Applying sibling style', node, styleIds, styleMap, newTheme);
+
   try {
     switch (node.type) {
       // Text layers can have stroke, effects and fill styles.

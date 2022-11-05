@@ -34,6 +34,8 @@ export const update: AsyncMessageChannelHandlers[AsyncMessageTypes.UPDATE] = asy
     if (msg.activeTheme && msg.themes) {
       await swapStyles(msg.activeTheme, msg.themes);
     }
+    figma.clientStorage.setAsync('last_used_themes', msg.themes);
+    figma.clientStorage.setAsync('last_used_tokens', msg.tokens);
   }
 
   return {

@@ -3,8 +3,12 @@ import { StyleIdMap, StyleThemeMap } from '@/types/StyleIdMap';
 import { applySiblingStyleId } from './applySiblingStyle';
 
 // Go through layers to swap styles
-export function swapStyles(activeTheme: string, themes: ThemeObjectsList) {
+export async function swapStyles(activeTheme: string, themes: ThemeObjectsList): Promise<string | null> {
+  console.log('Swapping styles', activeTheme, themes);
+
   const newTheme = themes.find((theme) => theme.id === activeTheme)?.name;
+  console.log('New theme', newTheme);
+
   // Creates an object that groups sibling styles by token name and theme name, e.g. { 'color.background': { 'dark': 'S:1234,4:16', 'light': 'S:1235,4:16' } }
   const mappedStyleReferences = themes.reduce((acc, theme) => {
     if (theme.$figmaStyleReferences) {
@@ -23,10 +27,12 @@ export function swapStyles(activeTheme: string, themes: ThemeObjectsList) {
     return acc;
   }, {} as StyleIdMap);
   if (!newTheme || !mappedStyleReferences || !allStyleIds) {
-    return;
+    return null;
   }
 
-  figma.currentPage.selection.forEach((layer) => {
-    applySiblingStyleId(layer, allStyleIds, mappedStyleReferences, newTheme);
-  });
+  console.log('Mapped style references', mappedStyleReferences);
+  console.log('All style ids', allStyleIds);
+
+  await Promise.all(figma.currentPage.selection.map((layer) => applySiblingStyleId(layer, allStyleIds, mappedStyleReferences, newTheme)));
+  return 'success';
 }

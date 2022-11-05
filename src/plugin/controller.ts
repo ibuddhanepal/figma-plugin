@@ -7,6 +7,8 @@ import { AsyncMessageChannel } from '@/AsyncMessageChannel';
 import { AsyncMessageTypes } from '@/types/AsyncMessages';
 import { sendSelectionChange } from './sendSelectionChange';
 import { init } from '@/utils/plugin';
+import { swapStyles } from './asyncMessageHandlers/swapStyles';
+import { ThemeObjectsList } from '@/types';
 
 figma.skipInvisibleInstanceChildren = true;
 
@@ -40,12 +42,55 @@ AsyncMessageChannel.PluginInstance.handle(AsyncMessageTypes.SET_LICENSE_KEY, asy
 AsyncMessageChannel.PluginInstance.handle(AsyncMessageTypes.ATTACH_LOCAL_STYLES_TO_THEME, asyncHandlers.attachLocalStylesToTheme);
 AsyncMessageChannel.PluginInstance.handle(AsyncMessageTypes.RESOLVE_STYLE_INFO, asyncHandlers.resolveStyleInfo);
 
-figma.on('close', () => {
-  defaultWorker.stop();
-});
+function runUI() {
+  init();
+}
+
+async function startPluginWithParameters(parameters: ParameterValues, themes: ThemeObjectsList) {
+  console.log('Starting', parameters);
+
+  await swapStyles(parameters.swap, themes);
+  figma.closePlugin();
+}
+
+async function runPlugin() {
+  let themes: ThemeObjectsList;
+  const themesOnFile = await figma.root.getSharedPluginData('tokens', 'themes');
+  if (!themesOnFile) {
+    console.log('No themes on file');
+    themes = await figma.clientStorage.getAsync('last_used_themes');
+  } else {
+    console.log('Themes on file');
+    themes = JSON.parse(themesOnFile);
+  }
+  figma.on('run', async ({ parameters }: RunEvent) => {
+    if (parameters) {
+      await startPluginWithParameters(parameters, themes);
+    } else {
+      runUI();
+    }
+  });
+  figma.parameters.on('input', async ({ key, result }: ParameterInputEvent) => {
+    const availableThemes = themes.map((theme) => ({ name: theme.name, data: theme.id }));
+    if (!themes?.length) {
+      result.setError('No themes available');
+    }
+
+    switch (key) {
+      case 'swap':
+        result.setSuggestions(availableThemes);
+        break;
+      default:
+    }
+  });
+
+  figma.on('close', () => {
+    defaultWorker.stop();
+  });
+}
 
 figma.on('selectionchange', () => {
   sendSelectionChange();
 });
 
-init();
+runPlugin();
