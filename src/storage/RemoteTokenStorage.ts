@@ -1,9 +1,11 @@
+import { flatmapToDataset, flattenDesignTokensMap } from 'figma-tokens-library';
 import { DeepTokensMap, ThemeObjectsList } from '@/types';
 import { RemoteResponseData } from '@/types/RemoteResponseData';
 import type { AnyTokenList, SingleToken } from '@/types/tokens';
 import convertTokensToObject from '@/utils/convertTokensToObject';
 import parseTokenValues from '@/utils/parseTokenValues';
 import { SystemFilenames } from '@/constants/SystemFilenames';
+import { dataset, mutationClient } from '@/dataset';
 
 export type RemoteTokenStorageMetadata = {
   tokenSetOrder?: string[]
@@ -98,6 +100,14 @@ export abstract class RemoteTokenStorage<Metadata = unknown, SaveOptions = unkno
         if (file.type === 'themes') {
           data.themes = [...data.themes, ...file.data];
         } else if (file.type === 'tokenSet') {
+          // @README this should not live here but it is put here for the sake of example (and not having to update all the types)
+          // in reality we would update the data.tokens type to just be a raw token set as it comes in from the JSON without any processing
+          // here we are just creating a new tokenset in the datset
+          const tokenSet = mutationClient.add('tokenSet', file.name, { name: file.name });
+          // and subsequently adding all it's entries to it
+          const entries = flatmapToDataset(flattenDesignTokensMap(file.data), { tokenSet });
+          dataset.push(...entries);
+
           data.tokens = {
             ...data.tokens,
             ...parseTokenValues({ [file.name]: file.data }),

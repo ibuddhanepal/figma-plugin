@@ -2,6 +2,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTokenData, useTokens as useTokenSetTokens } from 'figma-tokens-library';
 import { mergeTokenGroups, resolveTokenValues } from '@/plugin/tokenHelpers';
 import TokenListing from './TokenListing';
 import TokensBottomBar from './TokensBottomBar';
@@ -32,6 +33,7 @@ import { styled } from '@/stitches.config';
 import { ManageThemesModal } from './ManageThemesModal';
 import { TokenSetStatus } from '@/constants/TokenSetStatus';
 import { UpdateMode } from '@/constants/UpdateMode';
+import { $e } from '@/dataset';
 
 const StyledButton = styled('button', {
   '&:focus, &:hover': {
@@ -105,6 +107,14 @@ function Tokens({ isActive }: { isActive: boolean }) {
   const updateMode = useSelector(updateModeSelector);
   const { confirm } = useConfirm();
   const shouldConfirm = React.useMemo(() => updateMode === UpdateMode.DOCUMENT, [updateMode]);
+
+  // @README we can use the library hooks to fetch the data
+  // for a single tokenSet
+  const globalTokens = useTokenSetTokens($e, 'global');
+  // or for a query
+  const queryTokens = useTokenData($e, '*[_type == "tokenSet"]');
+  // additionally there is also a hook to use the data for a single token (useToken)
+  console.log(globalTokens, queryTokens);
 
   React.useEffect(() => {
     if (tokenDiv.current) {
