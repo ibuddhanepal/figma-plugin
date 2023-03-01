@@ -1,22 +1,19 @@
 import { AliasDollarRegex, AliasRegex } from '@/constants/AliasRegex';
 
-export const findReferences = (tokenValue: string) => tokenValue?.toString().match(AliasRegex);
+export const findReferences = (tokenValue: string) => {
+  const match = AliasRegex.exec(tokenValue);
+  return match && (match[1] || match[2]);
+};
 
 export const findDollarReferences = (tokenValue: string) => tokenValue?.toString().match(AliasDollarRegex);
 
 export const findMatchingReferences = (tokenValue: string, valueToLookFor: string) => {
-  const references = findReferences(tokenValue);
-
-  if (references) {
-    return references.filter((ref) => {
-      const name = ref.startsWith('{') ? ref.slice(1, ref.length - 1) : ref.substring(1);
-      if (name === valueToLookFor) return ref;
-      return false;
-    });
+  const reference = findReferences(tokenValue);
+  if (reference === valueToLookFor) {
+    return [`{${valueToLookFor}}`];
   }
   return [];
 };
-
 export const replaceReferences = (tokenValue: string, oldName: string, newName: string) => {
   try {
     if (tokenValue.includes(oldName)) {

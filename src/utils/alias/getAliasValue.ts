@@ -49,7 +49,7 @@ export function getAliasValue(token: SingleToken | string | number, tokens: Sing
     const tokenReferences = typeof returnedValue === 'string' ? getRootReferences(returnedValue) : null;
 
     if (tokenReferences?.length) {
-      const resolvedReferences = Array.from(tokenReferences).map((ref) => {
+      const resolvedReferences = Array.from(tokenReferences).map((ref:string) => {
         if (ref.length > 1) {
           let nameToLookFor: string;
           if (ref.startsWith('{')) {
@@ -134,7 +134,8 @@ export function getAliasValue(token: SingleToken | string | number, tokens: Sing
       }
     }
   } catch (err) {
-    console.log(`Error getting alias value of ${JSON.stringify(token, null, 2)}`, tokens);
+    console.error(err);
+    // console.log(`Error getting alias value of ${JSON.stringify(token, null, 2)}`, tokens);
     return null;
   }
 

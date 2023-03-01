@@ -107,6 +107,8 @@ export class JSONBinTokenStorage extends RemoteTokenStorage<JsonBinMetadata> {
       mode: 'cors',
       cache: 'no-cache',
       credentials: 'same-origin',
+      // TODO faulty typing in the lib for the headers object
+      // @ts-ignore
       headers: new Headers([
         ...this.defaultHeaders.entries(),
         ['X-Bin-Meta', '0'],
@@ -162,7 +164,9 @@ export class JSONBinTokenStorage extends RemoteTokenStorage<JsonBinMetadata> {
       cache: 'no-cache',
       credentials: 'same-origin',
       body: JSON.stringify(dataObject),
+      // @ts-ignore
       headers: new Headers([
+
         ...this.defaultHeaders.entries(),
       ]),
     });

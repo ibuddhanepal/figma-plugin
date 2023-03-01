@@ -14,6 +14,25 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Profile current",
+      "program": "${relativeFileDirname}\\${fileBasenameNoExtension}.js",
+      "preLaunchTask": "tsc: build - tsconfig.profile.json",
+      "sourceMaps": true,
+      "smartStep": true,
+      "cwd": "${workspaceFolder}\\profiling",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "TS_NODE_BASEURL":"./profiling"
+      },
+      "runtimeArgs": [
+        "-r",
+        "tsconfig-paths/register",
+        "--experimental-modules",  
+      "--inspect-brk=9229"]
+  },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Debug tests",
       "runtimeExecutable": "npm",
       "runtimeArgs": [

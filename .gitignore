@@ -11,3 +11,5 @@ package
 storybook-static
 coverage
 .DS_Store
+profiling
+*.cpuprofile

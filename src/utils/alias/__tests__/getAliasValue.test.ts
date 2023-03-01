@@ -488,27 +488,39 @@ describe('getAliasValue', () => {
       type: TokenTypes.COLOR,
     },
     {
-      name: 'mode',
+      name: 'mode-light',
       input: 'light',
       value: 'light',
       type: TokenTypes.OTHER,
     },
     {
-      name: 'mode',
+      name: 'mode-dark',
       input: 'dark',
       value: 'dark',
       type: TokenTypes.OTHER,
     },
     {
       name: 'foreground.default',
-      input: '{color.{mode}-10}',
+      input: '{color.{mode-light}-10}',
       value: '#ffffff',
       type: TokenTypes.COLOR,
     },
     {
       name: 'foreground.subtle',
-      input: '{color.{mode}-20}',
+      input: '{color.{mode-dark}-10}',
+      value: '#000000',
+      type: TokenTypes.COLOR,
+    },
+    {
+      name: 'foreground.subtle',
+      input: '{color.{mode-dark}-20}',
       value: '#1f1f1f',
+      type: TokenTypes.COLOR,
+    },
+    {
+      name: 'multi.color',
+      input: '{color.{mode-dark}-20} / {color.{mode-light}-20}',
+      value: '#1f1f1f / #1f1f1f',
       type: TokenTypes.COLOR,
     },
 

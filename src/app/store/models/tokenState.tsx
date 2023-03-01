@@ -435,51 +435,79 @@ export const tokenState = createModel<RootModel>()({
       }
 
       if (payload.shouldUpdate && rootState.settings.updateOnChange) {
+        // TODO currently ignoring these until the typing is fixed in rematch
+        // @ts-ignore
         dispatch.tokenState.updateDocument();
       }
     },
     deleteToken() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     deleteTokenGroup() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     addTokenSet() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     duplicateTokenSet() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     renameTokenSet() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     deleteTokenSet() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     setTokenSetOrder() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     setTokenData(payload: SetTokenDataPayload) {
       if (payload.shouldUpdate) {
+        // TODO currently ignoring these until the typing is fixed in rematch
+        // @ts-ignore
         dispatch.tokenState.updateDocument();
       }
     },
     toggleUsedTokenSet() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ updateRemote: false });
     },
     toggleManyTokenSets() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ updateRemote: false });
     },
     toggleTreatAsSource() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ updateRemote: false });
     },
     duplicateToken(payload: DuplicateTokenPayload, rootState) {
       if (payload.shouldUpdate && rootState.settings.updateOnChange) {
+        // TODO currently ignoring these until the typing is fixed in rematch
+        // @ts-ignore
         dispatch.tokenState.updateDocument();
       }
     },
     createToken(payload: UpdateTokenPayload, rootState) {
       if (payload.shouldUpdate && rootState.settings.updateOnChange) {
+        // TODO currently ignoring these until the typing is fixed in rematch
+        // @ts-ignore
         dispatch.tokenState.updateDocument();
       }
     },
@@ -493,6 +521,8 @@ export const tokenState = createModel<RootModel>()({
       });
     },
     updateCheckForChanges() {
+      // TODO currently ignoring these until the typing is fixed in rematch
+      // @ts-ignore
       dispatch.tokenState.updateDocument({ shouldUpdateNodes: false });
     },
     updateDocument(options?: UpdateDocumentPayload, rootState?) {
