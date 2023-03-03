@@ -89,8 +89,8 @@ export default function SingleCompositionTokenForm({
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: '$3',
-        '& > .relative ': {
-          flex: '2',
+        '& :nth-child(2)': {
+          flex: '4',
         },
       }}
       >
