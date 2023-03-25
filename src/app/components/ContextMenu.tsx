@@ -10,6 +10,15 @@ const StyledContent = styled(ContextMenuPrimitive.Content, {
   boxShadow: '$contextMenu',
 });
 
+const StyledSubContent = styled(ContextMenuPrimitive.SubContent, {
+  minWidth: 100,
+  backgroundColor: '$contextMenuBackground',
+  borderRadius: '$contextMenu',
+  overflow: 'hidden',
+  padding: '$2',
+  boxShadow: '$contextMenu',
+});
+
 const itemStyles = {
   all: 'unset',
   fontSize: '$xsmall',
@@ -41,7 +50,8 @@ const itemStyles = {
 const StyledItem = styled(ContextMenuPrimitive.Item, { ...itemStyles });
 const StyledCheckboxItem = styled(ContextMenuPrimitive.CheckboxItem, { ...itemStyles });
 const StyledRadioItem = styled(ContextMenuPrimitive.RadioItem, { ...itemStyles });
-const StyledTriggerItem = styled(ContextMenuPrimitive.TriggerItem, {
+
+const StyledSubTrigger = styled(ContextMenuPrimitive.SubTrigger, {
   '&[data-state="open"]': {
     backgroundColor: '$interaction',
     color: '$onInteraction',
@@ -75,16 +85,33 @@ const StyledArrow = styled(ContextMenuPrimitive.Arrow, {
   fill: 'white',
 });
 
+const Content = StyledContent;
+const Item = StyledItem;
+const CheckboxItem = StyledCheckboxItem;
+const { RadioGroup } = ContextMenuPrimitive;
+const RadioItem = StyledRadioItem;
+const ItemIndicator = StyledItemIndicator;
+const Label = StyledLabel;
+const Separator = StyledSeparator;
+const Arrow = StyledArrow;
+const SubTrigger = StyledSubTrigger;
+const SubContent = StyledSubContent;
+const { Sub, Portal, Trigger } = ContextMenuPrimitive;
+
 // Exports
-export const ContextMenu = ContextMenuPrimitive.Root;
-export const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
-export const ContextMenuContent = StyledContent;
-export const ContextMenuItem = StyledItem;
-export const ContextMenuCheckboxItem = StyledCheckboxItem;
-export const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
-export const ContextMenuRadioItem = StyledRadioItem;
-export const ContextMenuItemIndicator = StyledItemIndicator;
-export const ContextMenuTriggerItem = StyledTriggerItem;
-export const ContextMenuLabel = StyledLabel;
-export const ContextMenuSeparator = StyledSeparator;
-export const ContextMenuArrow = StyledArrow;
+export const ContextMenu = Object.assign(ContextMenuPrimitive.Root, {
+  Trigger,
+  Content,
+  Item,
+  CheckboxItem,
+  RadioGroup,
+  RadioItem,
+  ItemIndicator,
+  Label,
+  Separator,
+  Arrow,
+  Sub,
+  SubTrigger,
+  SubContent,
+  Portal,
+});

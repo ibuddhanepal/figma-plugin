@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger,
-} from '../ContextMenu';
+import { ContextMenu } from '../ContextMenu';
 import Stack from '../Stack';
 import Heading from '../Heading';
 import useManageTokens from '../../store/useManageTokens';
@@ -84,23 +82,25 @@ export function TokenGroupHeading({
         type="button"
       >
         <ContextMenu>
-          <ContextMenuTrigger data-testid={`group-heading-${path}-${label}-${id}`} onClick={handleToggleCollapsed}>
+          <ContextMenu.Trigger asChild data-testid={`group-heading-${path}-${label}-${id}`} onClick={handleToggleCollapsed}>
             <Stack direction="row" gap={2} align="center" css={{ color: '$textMuted' }}>
               {collapsed.includes(path) ? <IconCollapseArrow /> : <IconExpandArrow />}
               <Heading muted size="small">{label}</Heading>
             </Stack>
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem disabled={editProhibited} onSelect={handleRename}>
-              Rename
-            </ContextMenuItem>
-            <ContextMenuItem disabled={editProhibited} onSelect={handleDuplicate}>
-              Duplicate
-            </ContextMenuItem>
-            <ContextMenuItem disabled={editProhibited} onSelect={handleDelete}>
-              Delete
-            </ContextMenuItem>
-          </ContextMenuContent>
+          </ContextMenu.Trigger>
+          <ContextMenu.Portal>
+            <ContextMenu.Content>
+              <ContextMenu.Item disabled={editProhibited} onSelect={handleRename}>
+                Rename
+              </ContextMenu.Item>
+              <ContextMenu.Item disabled={editProhibited} onSelect={handleDuplicate}>
+                Duplicate
+              </ContextMenu.Item>
+              <ContextMenu.Item disabled={editProhibited} onSelect={handleDelete}>
+                Delete
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu.Portal>
         </ContextMenu>
       </StyledTokenGroupHeadingCollapsable>
 

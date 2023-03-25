@@ -1,10 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { CheckIcon } from '@radix-ui/react-icons';
-import {
-  ContextMenuCheckboxItem,
-  ContextMenuItemIndicator,
-} from '../ContextMenu';
+import { ContextMenu } from '../ContextMenu';
 import { PropertyObject } from '@/types/properties';
 import { mainNodeSelectionValuesSelector } from '@/selectors';
 
@@ -28,16 +25,16 @@ export const MoreButtonProperty: React.FC<Props> = ({
   }, [property, isActive, onClick]);
 
   return (
-    <ContextMenuCheckboxItem
+    <ContextMenu.CheckboxItem
       key={property.label}
       checked={isActive}
       onSelect={handleClick}
       disabled={disabled}
     >
-      <ContextMenuItemIndicator>
+      <ContextMenu.ItemIndicator>
         <CheckIcon />
-      </ContextMenuItemIndicator>
+      </ContextMenu.ItemIndicator>
       {property.label}
-    </ContextMenuCheckboxItem>
+    </ContextMenu.CheckboxItem>
   );
 };
